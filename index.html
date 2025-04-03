@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبه درصد آزمون</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iransans-web@latest/css/iransans.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: 'IRANSans', sans-serif;
+            text-align: center;
+            direction: rtl;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            max-width: 400px;
+            width: 90%;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #d1d1d6;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #f9f9fa;
+            text-align: center;
+            outline: none;
+            transition: border 0.3s;
+        }
+        input:focus {
+            border: 1px solid #0071e3;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background: #0071e3;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-family: 'IRANSans', sans-serif;
+        }
+        button:hover {
+            background: #005bb5;
+        }
+        .result-container {
+            margin-top: 15px;
+        }
+        .result-box {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+            line-height: 40px;
+            background: #e0e0e0;
+            overflow: hidden;
+        }
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #4caf50;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            z-index: 0;
+        }
+        .result-box span {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>محاسبه درصد آزمون</h2>
+        <h3>دفترچه اول</h3>
+        <label>تعداد درست:</label>
+        <input type="number" id="correct1" min="0" max="60"><br>
+        <label>تعداد غلط:</label>
+        <input type="number" id="wrong1" min="0" max="60"><br>
+        
+        <h3>دفترچه دوم</h3>
+        <label>تعداد درست:</label>
+        <input type="number" id="correct2" min="0" max="60"><br>
+        <label>تعداد غلط:</label>
+        <input type="number" id="wrong2" min="0" max="60"><br>
+        
+        <button onclick="calculateScore()">محاسبه درصد</button>
+        
+        <div class="result-container">
+            <div class="result-box"><div class="progress" id="progress1"></div><span id="result1"></span></div>
+            <div class="result-box"><div class="progress" id="progress2"></div><span id="result2"></span></div>
+            <div class="result-box"><div class="progress" id="progressFinal"></div><span id="finalResult"></span></div>
+        </div>
+    </div>
+
+<script>
+    function calculateScore() {
+        let correct1 = parseInt(document.getElementById('correct1').value) || 0;
+        let wrong1 = parseInt(document.getElementById('wrong1').value) || 0;
+        let correct2 = parseInt(document.getElementById('correct2').value) || 0;
+        let wrong2 = parseInt(document.getElementById('wrong2').value) || 0;
+
+        let total1 = correct1 - (wrong1 / 3);
+        let total2 = correct2 - (wrong2 / 3);
+
+        let percentage1 = (total1 / 60) * 100;
+        let percentage2 = (total2 / 60) * 100;
+
+        let weighted1 = total1 * 3;
+        let weighted2 = total2 * 1;
+        let totalWeighted = weighted1 + weighted2;
+        let maxWeighted = (60 * 3) + (60 * 1);
+        let finalPercentage = (totalWeighted / maxWeighted) * 100;
+
+        document.getElementById('result1').innerText = `درصد دفترچه اول: ${percentage1.toFixed(2)}٪`;
+        document.getElementById('progress1').style.width = `${percentage1}%`;
+        
+        document.getElementById('result2').innerText = `درصد دفترچه دوم: ${percentage2.toFixed(2)}٪`;
+        document.getElementById('progress2').style.width = `${percentage2}%`;
+        
+        document.getElementById('finalResult').innerText = `درصد کل آزمون: ${finalPercentage.toFixed(2)}٪`;
+        document.getElementById('progressFinal').style.width = `${finalPercentage}%`;
+    }
+</script>
+</body>
+</html>
